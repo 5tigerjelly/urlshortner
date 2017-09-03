@@ -1,15 +1,32 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded());
 
 DB = {};
+NOTFOUND = "Not Found!!!";
 
+// get url
 app.get('/:url', function (req, res) {
-  console.log("in");
+  console.log('short url is '+ req.params.url);
   var longUrl = getUrl(req.params.url);
-  res.json({longUrl:longUrl});
-})
+  if(longUrl == NOTFOUND){
+    res.sendStatus(404);
+  }else{
+    res.redirect(301, longUrl);
+  }
+});
+
+// set url
+app.put('/', function (req, res) {
+  console.log(req.body);
+  console.log('full url is '+ req.body.url);
+  var shortUrl = setUrl(req.body.url);
+  console.log('shrunk url is ' + shortUrl);
+  res.json({shortUrl:shortUrl});
+});
 
 function setUrl(fullUrl){
   if(DB[fullUrl]){
@@ -22,14 +39,13 @@ function setUrl(fullUrl){
     DB[randomUrl] = fullUrl;
     return randomUrl;
   }
-
 }
 
 function getUrl(shortUrl){
   if(DB[shortUrl]){
     return DB[shortUrl];
   }
-  return "Not Found";
+  return NOTFOUND;
 }
 
 function makeid() {
