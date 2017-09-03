@@ -7,48 +7,62 @@ storage.initSync();
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded());
 
-DB = {};
+KEYS = new Set(storage.keys()); //load keys only once
 NOTFOUND = "Not Found!!!";
 var PORT = process.env.PORT || 3000;
 
 // get url
 app.get('/:url', function (req, res) {
   console.log('short url is '+ req.params.url);
-  var longUrl = getUrl(req.params.url);
-  if(longUrl == NOTFOUND){
-    res.sendStatus(404);
-  }else{
-    res.redirect(301, longUrl);
-  }
+  getUrl(req.params.url).then(function(longUrl){
+    if(longUrl == NOTFOUND){
+      res.sendStatus(404);
+    }else{
+      res.redirect(301, longUrl);
+    }
+  });
 });
 
 // set url
 app.put('/', function (req, res) {
-  console.log(req.body);
   console.log('full url is '+ req.body.url);
-  var shortUrl = setUrl(req.body.url);
-  console.log('shrunk url is ' + shortUrl);
-  res.json({shortUrl:shortUrl});
+  setUrl(req.body.url).then(function(shortUrl){
+    console.log("IN");
+    console.log('shrunk url is ' + shortUrl);
+    res.json({shortUrl:shortUrl});
+  });
+
 });
 
 function setUrl(fullUrl){
-  if(DB[fullUrl]){
-    return DB[fullUrl];
-  }else{
-    var randomUrl = makeid();
-    while(DB[randomUrl]){
-      randomUrl = makeid();
-    }
-    DB[randomUrl] = fullUrl;
-    return randomUrl;
-  }
+  return new Promise((resolve, reject) => {
+    storage.get(fullUrl).then(function(value) {
+      console.log(value);
+      if(typeof value != 'undefined'){
+        resolve(value);
+      }else{
+        value = makeid();
+        while(value in KEYS){
+          value = makeid();
+        }
+        storage.set(value, fullUrl);
+        resolve(value);
+      }
+    });
+  });
 }
 
 function getUrl(shortUrl){
-  if(DB[shortUrl]){
-    return DB[shortUrl];
-  }
-  return NOTFOUND;
+  return new Promise((resolve, reject) => {
+    storage.get(shortUrl).then(function(value) {
+      console.log(value);
+      if(typeof value === 'undefined'){
+        reject(NOTFOUND);
+      }else{
+        resolve(value);
+      }
+    });
+  });
 }
 
 function makeid() {
