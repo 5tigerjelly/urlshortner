@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+var storage = require('node-persist');
+storage.initSync();
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded());
 
 DB = {};
 NOTFOUND = "Not Found!!!";
+var PORT = process.env.PORT || 3000;
 
 // get url
 app.get('/:url', function (req, res) {
@@ -57,15 +60,6 @@ function makeid() {
   return text;
 }
 
-var short = setUrl("longurl.com");
-console.log(short);
-console.log(getUrl(short));
-console.log(DB);
-
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+app.listen(PORT, function () {
+  console.log('Server Started')
 })

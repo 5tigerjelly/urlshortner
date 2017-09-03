@@ -5,14 +5,14 @@ function
 	able to shorten url
 		check for cache
 		check if valid url
-		able to set endtime
+		able to set end time
 		able to set max number of clicks
 
 
 	able to customize url
 		check if customize already taken
 
-	able to anlize clicks
+	able to analyze clicks
 		check number of clicks
 		check country click
 		check when click
