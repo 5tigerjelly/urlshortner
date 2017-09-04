@@ -1,8 +1,15 @@
 # urlshortner
 Life is too short for long urls. Shorten them.
 
-## functions
+## Working Beta
+The current beta is running on [heroku](https://safe-taiga-63621.herokuapp.com/)<br/>
+https://safe-taiga-63621.herokuapp.com
 
+## Running Program on Local Machine
+Please run `npm install` to install dependencies<br/>
+Then run `npm start` to start running locally
+
+## TODO List
 ### able to shorten url
  - [ ] check for cache
  - [ ] check if valid url
