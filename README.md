@@ -6,13 +6,28 @@ The current beta is running on [heroku](https://safe-taiga-63621.herokuapp.com/)
 https://safe-taiga-63621.herokuapp.com
 
 ## Running Program on Local Machine
-Please run `npm install` to install dependencies<br/>
-Then run `npm start` to start running locally
+To install dependencies
+```js
+npm install
+```
+To start running locally
+```js
+npm start
+```
+
+## Technical Detail
+### Node.js
+The main component was built on `node.js`.
+### Dependencies
+`express` handles all routing to the server.<br />
+`node-persist` allows data to be stored to memory for later access. This replaces an actual database.<br />
+`body-parser` parses the body of the request made from the front end.
+
 
 ## TODO List
 ### able to shorten url
- - [ ] check for cache
- - [ ] check if valid url
+ - [x] check for cache
+ - [x] check if valid url
  - [ ] 	able to set end time
  - [ ] 	able to set max number of clicks
 
