@@ -29,3 +29,6 @@ Then run `npm start` to start running locally
  - [ ] able to make account
  - [ ] 	no dup id
  - [ ] 	password
+
+### Useful Links
+https://stackoverflow.com/questions/14754619/jquery-ajax-success-callback-function-definition
