@@ -13,10 +13,20 @@ function setUrl(fullUrl){
    dataType: "json",
    data: { url: fullUrl },
    success: function(data) {
-     shortUrl = window.location.href + data.shortUrl;
+     var shortUrl = window.location.href + data.shortUrl;
      $('#shortUrlLink').text(shortUrl);
      $("a").attr("href", shortUrl);
+     $('#formUrl').val('');
      $('#resultsBox').fadeIn();
+     copyToClipboard(shortUrl);
    }
  });
+}
+
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val(element).select();
+  document.execCommand("copy");
+  $temp.remove();
 }
